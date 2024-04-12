@@ -1,1 +1,1 @@
-# critical_bonds
+# Critical bonds for percolated clusters
