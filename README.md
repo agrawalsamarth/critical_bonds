@@ -1,6 +1,6 @@
 # Critical bonds for percolated clusters
 
-node id start at 0 or 1 and are id holes allowed or not? need to mention this here.
+node id start at 0 or 1 and are id holes allowed or not? need to mention this here. Must x y z be contained in the periodic box or can they be outside? I would mention.
 
 ## input format 
 
