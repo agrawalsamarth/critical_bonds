@@ -6,7 +6,7 @@ node id start at 0 or 1 and are id holes allowed or not? need to mention this he
 
 Node IDs start at 0 and end at number of nodes -1. For 2D configurations the entries in brackets are absent.
 
-    dimensions
+    dimensions                     <- space dimension
     xlo xhi ylo yhi [zlo zhi]      <- box ranges
     N                              <- number of nodes
     x y [z]                        <- this is the coordinate of node 0
