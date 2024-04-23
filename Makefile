@@ -1,10 +1,6 @@
 IDIR =./include
 CXX=g++
-#CPPFLAGS=-g -I$(IDIR) -I/home/samarth/codes/voronoi/include -std=c++11 -O3 -w -Wall
-CPPFLAGS=-g -I$(IDIR) -O3
-#CPPFLAGS=-I$(IDIR) -O3
-#LDFLAGS=-O3
-#POSTFIX=-L/home/samarth/codes/voronoi/lib/ -lvoro++
+CPPFLAGS=-I$(IDIR) -O3
 
 
 SRC_DIR = ./src
@@ -18,7 +14,7 @@ all: critical_bonds
 #all: psd_test
 	
 critical_bonds: $(OBJ_FILES) | $(BIN_DIR)
-	$(CXX) $(CPPFLAGS) -c -o critical_bonds.o target/critical_bonds.cpp
+	$(CXX) $(CPPFLAGS) -c -o critical_bonds.o critical_bonds.cpp
 	$(CXX) $(LDFLAGS) -o $(BIN_DIR)/$@ $^ critical_bonds.o
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
