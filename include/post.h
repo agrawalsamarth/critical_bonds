@@ -83,7 +83,6 @@ class postprocessing
 
     void init_lbb_unfolding_without_recursion();
     void unfold_for_clusterwise_without_recursion(int i);
-    //void calc_total_bonds();
     void unfold_for_lbp_without_recursion(int i);
     
     private:
@@ -100,6 +99,7 @@ class postprocessing
     std::vector<std::vector<int>> attachment_;
     bool   *is_placed_;
     bool   *attachments_placed_;
+    bool   *node_info;
 
     std::map<std::pair<int,int>, int> bond_map_status;
     std::pair<int,int> temp_pair;
