@@ -4,11 +4,11 @@ description missing
 
 call critical_bonds with one, two or three arguments:
 
-    critical_bonds(inputfile)
+    critical_bonds(cb_input_filename)
 
-    critical_bonds(inputfile,outputfile)
+    critical_bonds(cb_input_filename,cb_output_filename)
 
-    critical_bonds(inputfile,outputfile,true)
+    critical_bonds(cb_input_filename,cb_output_filename,true)
 
 
 
