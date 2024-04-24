@@ -26,6 +26,8 @@ switch nargin
         outputfile = varargin(2);
         verbose = false;
     case 3
+        inputfile = varargin(1);
+        outputfile = varargin(2);
         verbose = true;
     otherwise
         disp('call critical_bonds with one, two or three arguments:');
