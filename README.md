@@ -1,6 +1,6 @@
 # Critical bonds for percolated clusters
 
-We here offer two versions of the critical_bonds software that returns the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: c++ and MATLAB versions. Both versions operate on a standardized input file format described below. The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer converters to this input file format from other data formats like LAMMPS data files. Other converters will follow. Suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and/or a LAMMPS data file that masks the critical bonds by bond type 2. 
+We here offer two versions of the critical_bonds software that returns the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](c++) and [MATLAB](MATLAB) versions. Both versions operate on a standardized input file format described below. The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer [converters](#converters) to this input file format from other data formats like LAMMPS data files. Other converters will follow. Suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and/or a LAMMPS data file that masks the critical bonds by bond type 2. 
 
 This software is part of the Supplemental Information of the following publication: 
 
@@ -20,7 +20,7 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
                   doi = {XX} 
          }
 
-## c++ version
+## c++ version<a name="c++">
 
 ### Installation
 
@@ -61,5 +61,9 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     b1 b2                          <- 2nd critical bond between node b1 and node b2
     ...
     b1 b2                          <- last critical bond between node b1 and node b2
+
+## MATLAB version<a name="MATLAB">
+
+## Converters<a name="converters">
 
 
