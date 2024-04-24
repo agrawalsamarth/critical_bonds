@@ -1,5 +1,9 @@
 # Critical bonds for percolated clusters
 
+We here offer two versions of the critical_bonds software that returns the critical bonds for a 2D or 3D bond-connected network of nodes in the presence of periodic boundary conditions. Both versions operate on a standardized input file format described below. The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer converters to this input file format from other data formats like LAMMPS data files. Other converters will be added. 
+
+critical_bonds
+
 I have a few questions: 
 1) Can the IDs start at 1 or 5, for example?
 2) Can the IDs have holes, can one have IDs 2,13,25 and no others?
@@ -26,13 +30,21 @@ We can improve on 3) + 4) later on and make it more robust by relaxing condition
 
 ### Installation
 
-Clone this Github repository. Then install the code via 
+Clone this Github repository. Then install the code via make
 
+         git clone https://github.com/agrawalsamarth/critical_bonds;
+         cd critical_bonds; 
          make critical_bonds
+
+Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
+
+          git clone https://gitlab.com/libeigen/eigen.git
 
 ### Usage
 
-### Input format 
+         ./bin/critical_bonds <input_filename> <output_filename>
+
+### Format of the input_filename 
 
 For 2D configurations the entries in brackets are absent. The coordinates of the nodes should be between the specified box sizes (xlo, xhi) etc. Node IDs start at 0 and end at number of nodes-1, ie, the first row of the coordinates table corresponds to the node with id 0, and the last row of this table has id number of nodes - 1. These id values are then used to build the corresponding bond table.
 
@@ -49,7 +61,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- node b1 is bonded to node b2
 
-### Output format
+### Format of the output_filename
 
     b1 b2                          <- 1st critical bond between node b1 and node b2
     b1 b2                          <- 2nd critical bond between node b1 and node b2
@@ -57,12 +69,3 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     b1 b2                          <- last critical bond between node b1 and node b2
 
 
-### Installation and Usage
-
-Please install the code using:
-
-### make critical_bonds
-
-Note that Eigen library is required. The library can be used through the command:
-
-## ./bin/critical_bonds <input_filename> <output_filename>
