@@ -1,6 +1,24 @@
 # Critical bonds for percolated clusters
 
-We here offer two versions of the critical_bonds software that returns the critical bonds for a 2D or 3D bond-connected network of nodes in the presence of periodic boundary conditions: A c++ version and a MATLAB version. Both versions operate on a standardized input file format described below. The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer converters to this input file format from other data formats like LAMMPS data files. Other converters will follow. Suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and/or a LAMMPS data file that masks the critical bonds by bond type 2. 
+We here offer two versions of the critical_bonds software that returns the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: c++ and MATLAB versions. Both versions operate on a standardized input file format described below. The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer converters to this input file format from other data formats like LAMMPS data files. Other converters will follow. Suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and/or a LAMMPS data file that masks the critical bonds by bond type 2. 
+
+This software is part of the Supplemental Information of the following publication: 
+
+S. Agrawal, S. Galmarini, M. Kröger, 
+Energy formulation for infinite structures: order parameter for percolation, critical bonds and power-law scaling of contact-based transport,
+Phys. Rev. Lett. (2024) in press since 12 Apr 2024
+
+         @article{critical-bonds,
+                  author = {S. Agrawal and S. Galmarini and M. Kr\"oger}, 
+                  title = {Energy formulation for infinite structures: order parameter for percolation, 
+                  critical bonds and power-law scaling of contact-based transport},
+                  journal = {Phys. Rev. Lett.},
+                  year = {2024},
+                  volume = {XX},
+                  pages = {XX},
+                  note = {Code available at https://github.com/agrawalsamarth/critical_bonds}
+                  doi = {XX} 
+         }
 
 ## c++ version
 
