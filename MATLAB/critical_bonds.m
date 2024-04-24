@@ -22,12 +22,12 @@ vis     = false;
 
 switch nargin
     case 2
-        inputfile = varargin(1);
-        outputfile = varargin(2);
+        inputfile = string(varargin(1));
+        outputfile = string(varargin(2));
         verbose = false;
     case 3
-        inputfile = varargin(1);
-        outputfile = varargin(2);
+        inputfile = string(varargin(1));
+        outputfile = string(varargin(2));
         verbose = true;
     otherwise
         disp('call critical_bonds with one, two or three arguments:');
@@ -84,7 +84,7 @@ end
 if verbose, disp([num2str(toc) ' cpu seconds for critical bonds']); end
 disp([num2str(critical_bonds) ' critical bonds']);
 
-writematrix([critical_b1 critical_b2],outputfile,'delimiter',' ');
+if critical_b1, writematrix([critical_b1 critical_b2],outputfile,'delimiter',' '); end
 
 for k=1:length(CITEAS); disp(CITEAS{k}); end
 
