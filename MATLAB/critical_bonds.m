@@ -1,4 +1,4 @@
-function critical_bonds(varargin)
+function [cb_bondlist]=critical_bonds(varargin)
 close all
 
 % (c) 24 april 2024 Martin Kroger, ETH Zurich, mk@mat.ethz.ch 
@@ -16,9 +16,7 @@ CITEAS{8} = '____________________________________________________';
 % this code does not erase any dangling bonds etc. for small systems
 % set finalID2ID
 
-%verbose = false;
 vis     = false; 
-%inputfile = 'test-config-0.txt';
 
 switch nargin
     case 2
@@ -51,13 +49,16 @@ if verbose, disp([num2str(toc) ' cpu seconds for erase_dangling_ends_and_linear_
 if verbose, tic; end
 [clusters,IDinclusterID,IDSinclusterID]=get_clusters(nodes,bonds,b1,b2,verbose);
 if verbose, disp([num2str(toc) ' cpu seconds for get_clusters']); end
+
 critical_bonds = 0; 
+cb_bondlist = []; 
+
 if verbose, tic; end
 for cID=1:clusters
     [calL,bdim,NODES,BONDS,X,B1,B2] = setup_sparse_A_matrix_and_bdim_for_cluster(dim,L,x,b1,b2,cID,IDSinclusterID{cID}',verbose);
     longestBID = true;
     while isnan(longestBID)==false
-        [XEQ,longestBID] = equilibrate(dim,L,calL,bdim,B1,B2);
+        [XEQ,longestBID] = equilibrate(dim,L,calL,bdim,B1,B2,verbose);
         visualize(L,XEQ,B1,B2,['cluster ' num2str(cID)],vis);
         if isnan(longestBID)==false
             critical_bonds = critical_bonds + 1; 
@@ -84,7 +85,8 @@ end
 if verbose, disp([num2str(toc) ' cpu seconds for critical bonds']); end
 disp([num2str(critical_bonds) ' critical bonds']);
 
-if critical_b1, writematrix([critical_b1 critical_b2],outputfile,'delimiter',' '); end
+cb_bondlist = [critical_b1 critical_b2]; 
+if critical_b1, writematrix(cb_bondlist,outputfile,'delimiter',' '); end
 
 for k=1:length(CITEAS); disp(CITEAS{k}); end
 
@@ -103,7 +105,7 @@ function visualize(L,x,b1,b2,mytitle,vis)
     axis([-L(1)/2 L(1)/2 -L(2)/2 L(2)/2]);
     title(mytitle);
 
-function [XEQ,longestBID] = equilibrate(dim,L,calL,bdim,B1,B2)
+function [XEQ,longestBID] = equilibrate(dim,L,calL,bdim,B1,B2,verbose)
     for d=1:dim
         XEQ(:,d) = calL\bdim(:,d);
     end
@@ -115,11 +117,11 @@ function [XEQ,longestBID] = equilibrate(dim,L,calL,bdim,B1,B2)
     longestbondlen = bondlengths(longestBID);
     if longestbondlen>1e-8
         longestBID = longestBID(1);
+        if verbose, disp(['longest bond length ' num2str(longestbondlen) ' at bID ' num2str(longestBID) ' /' num2str(length(B1)) ' remaining bonds']); end
     else
         longestBID = nan;
     end
-    disp(['longest bond length ' num2str(longestbondlen) ' at bID ' num2str(longestBID) ' /' num2str(length(B1)) ' remaining bonds']); 
-    
+     
 
 function [calL,bdim,NODES,BONDS,X,B1,B2] = setup_sparse_A_matrix_and_bdim_for_cluster(dim,L,x,b1,b2,cID,IDs,verbose)
 % for a single cluster: NODES positions X, BONDS bonds B1, B2
