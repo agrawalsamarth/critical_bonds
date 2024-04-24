@@ -22,7 +22,17 @@ Answers:
 
 We can improve on 3) + 4) later on and make it more robust by relaxing conditions on 1) and 2) in due time. But given my health and the deadline we can proceed with this for now.
 
-## Input format 
+## c++ version
+
+### Installation
+
+Clone this Github repository. Then install the code via 
+
+         make critical_bonds
+
+### Usage
+
+### Input format 
 
 For 2D configurations the entries in brackets are absent. The coordinates of the nodes should be between the specified box sizes (xlo, xhi) etc. Node IDs start at 0 and end at number of nodes-1, ie, the first row of the coordinates table corresponds to the node with id 0, and the last row of this table has id number of nodes - 1. These id values are then used to build the corresponding bond table.
 
@@ -39,7 +49,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- node b1 is bonded to node b2
 
-## Output format
+### Output format
 
     b1 b2                          <- 1st critical bond between node b1 and node b2
     b1 b2                          <- 2nd critical bond between node b1 and node b2
@@ -47,11 +57,11 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     b1 b2                          <- last critical bond between node b1 and node b2
 
 
-# Installation and Usage
+### Installation and Usage
 
 Please install the code using:
 
-## make critical_bonds
+### make critical_bonds
 
 Note that Eigen library is required. The library can be used through the command:
 
