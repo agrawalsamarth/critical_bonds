@@ -20,7 +20,7 @@ where bondlist is a N x 2 matrix carrying a pair of bonds in each row.
     
 It can also be called from the linux command line via
 
-    matlab -r critical_bonds(cb_input_filename[,cb_output_filename][,true])
+     matlab -r "critical_bonds('cb_input_filename'[,'cb_output_filename'][,true])"
 
 or from the matlab command line via 
 
