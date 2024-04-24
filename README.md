@@ -9,10 +9,10 @@ Node IDs start at 0 and end at number of nodes -1. The table of values can be in
     dimensions                     <- space dimension, either 2 or 3
     xlo xhi ylo yhi [zlo zhi]      <- box ranges
     N                              <- number of nodes
-    id x y [z]                        <- this is the id followed by the coordinate of node 0
-    id x y [z]                        <- this is the id followed by the coordinate of node 1
+    id x y [z]                     <- this is the id followed by the coordinate of node 0
+    id x y [z]                     <- this is the id followed by the coordinate of node 1
     ...
-    id x y [z]                        <- this is the id followed by the coordinate of node N-1
+    id x y [z]                     <- this is the id followed by the coordinate of node N-1
     number of bonds                <- number of bonded pairs of nodes
     b1 b2                          <- node b1 is bonded to node b2
     b1 b2                          
