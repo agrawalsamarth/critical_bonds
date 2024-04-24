@@ -84,6 +84,7 @@ class postprocessing
     void init_lbb_unfolding_without_recursion();
     void unfold_for_clusterwise_without_recursion(int i);
     void unfold_for_lbp_without_recursion(int i);
+    void check_if_line(std::ifstream &temp_parser, std::string &temp_str, int &temp_count);
     
     private:
 

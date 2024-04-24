@@ -3,6 +3,18 @@
 namespace post_p
 {
 
+void postprocessing::check_if_line(std::ifstream &temp_parser, std::string &temp_str, int &temp_count)
+{
+    try{
+        getline(temp_parser,temp_str);
+    }
+
+    catch (...){
+        std::cout<<"line number "<<temp_count<<" is missing"<<std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
 void postprocessing::read_config_parser(char *config_filename)
 {
     std::ifstream parser(config_filename, std::ifstream::in);
@@ -10,8 +22,8 @@ void postprocessing::read_config_parser(char *config_filename)
     std::vector<std::string> results;
     int count = 1;
     
-    getline(parser,str);
-
+    check_if_line(parser, str, count);
+    
     try{
         D_ = stoi(str);
         count++;
@@ -22,10 +34,9 @@ void postprocessing::read_config_parser(char *config_filename)
         exit(EXIT_FAILURE);
     }
 
-    getline(parser, str);
+    check_if_line(parser, str, count);
+    count++;
     results   = split_string_by_delimiter(str, ' ');
-
-    
 
     lo_hi_    = (double*)malloc(sizeof(double)*D_*2);
     L_        = (double*)malloc(sizeof(double)*D_);
@@ -33,35 +44,72 @@ void postprocessing::read_config_parser(char *config_filename)
     periodic_ = (int*)malloc(sizeof(int)*D_);
 
     for (int i = 0; i < D_; i++){
-        lo_hi_[2*i]     = stod(results[2*i]);
-        lo_hi_[2*i + 1] = stod(results[2*i+1]);
+
+        try{
+            lo_hi_[2*i] = stod(results[2*i]);
+        }
+
+        catch (...){
+            std::cout<<"lo value of direction "<<(i+1)<<" is either not specified or not a float value"<<std::endl;
+        }
+
+        try{
+            lo_hi_[2*i+1] = stod(results[2*i+1]);
+        }
+
+        catch (...){
+            std::cout<<"hi value of direction "<<(i+1)<<" is either not specified or not a float value"<<std::endl;
+        }        
+
+        //lo_hi_[2*i]     = stod(results[2*i]);
+        //lo_hi_[2*i + 1] = stod(results[2*i+1]);
         L_[i]           = stod(results[2*i+1]) - stod(results[2*i]);
         halfL_[i]       = 0.5*L_[i];
         periodic_[i]    = 1;
     }
 
-    getline(parser, str);
-    N_   = stoi(str);
+    check_if_line(parser, str, count);
+    
+    try{
+        N_   = stoi(str);
+        count++;
+    }
+
+    catch(...){
+        std::cout<<"Line "<<count<<" should be the number of nodes in integer value only"<<std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     pos_ = (double*)malloc(sizeof(double)*N_*D_);
     
-    node_info = (bool*)malloc(sizeof(bool)*N_);
-
-    for (int i = 0; i < N_; i++)
-        node_info[i] = false;
-
-    int id;
-
     for (int i = 0; i < N_; i++){
-        getline(parser, str);
+        check_if_line(parser, str, count);
         results = split_string_by_delimiter(str, ' ');
 
         for (int axis = 0; axis < D_; axis++){
-            pos(i, axis) = stod(results[axis]);
+            try{
+                pos(i, axis) = stod(results[axis]);
+            }
+            catch(...){
+                std::cout<<"column "<<(axis+1)<<" of Line "<<count<<" is either not specified or not a float value";
+                exit(EXIT_FAILURE);
+            }
         }
+
+        count++;
     }
 
-    getline(parser, str);
-    num_bonds = stoi(str);
+    check_if_line(parser, str, count);
+
+    try{
+        num_bonds = stoi(str);
+        count++;
+    }
+
+    catch(...){
+        std::cout<<"Line number "<<count<<" should be bumber of bonds in integer value only"<<std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     attachment_.resize(N_);
     num_attachments_ = (int*)malloc(sizeof(int)*N_);
@@ -69,14 +117,28 @@ void postprocessing::read_config_parser(char *config_filename)
     int att_i, att_j;
 
     for (int i = 0; i < num_bonds; i++){
-        getline(parser, str);
+        check_if_line(parser, str, count);
         results = split_string_by_delimiter(str, ' ');
 
-        att_i = stoi(results[0]);
-        att_j = stoi(results[1]);
+        try{
+            att_i = stoi(results[0]);
+        }
+        catch(...){
+            std::cout<<"column 1 of Line number "<<count<<" is either not specified or not an integer"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        try{
+            att_j = stoi(results[1]);
+        }
+        catch(...){
+            std::cout<<"column 2 of Line number "<<count<<" is either not specified or not an integer"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
 
         attachment_[att_i].push_back(att_j);
         attachment_[att_j].push_back(att_i);
+        count++;
     }
 
     for (int i = 0; i < N_; i++){
