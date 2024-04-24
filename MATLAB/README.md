@@ -18,13 +18,13 @@ We offer a MATLAB function critical_bonds, that can be used from within any othe
 
 where bondlist is a N x 2 matrix carrying a pair of bonds in each row. 
     
-It can also be called from the command line via
+It can also be called from the linux command line via
 
-    critical_bonds(cb_input_filename)
+    matlab -r critical_bonds(cb_input_filename[,cb_output_filename][,true])
 
-    critical_bonds(cb_input_filename,cb_output_filename)
+or from the matlab command line via 
 
-    critical_bonds(cb_input_filename,cb_output_filename,true)
+    critical_bonds(cb_input_filename[,cb_output_filename][,true])
 
 
 
