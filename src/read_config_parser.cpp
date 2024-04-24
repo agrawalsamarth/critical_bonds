@@ -36,7 +36,6 @@ void postprocessing::read_config_parser(char *config_filename)
         lo_hi_[2*i]     = stod(results[2*i]);
         lo_hi_[2*i + 1] = stod(results[2*i+1]);
         L_[i]           = stod(results[2*i+1]) - stod(results[2*i]);
-        std::cout<<L_[i]<<std::endl;
         halfL_[i]       = 0.5*L_[i];
         periodic_[i]    = 1;
     }
@@ -56,15 +55,8 @@ void postprocessing::read_config_parser(char *config_filename)
         getline(parser, str);
         results = split_string_by_delimiter(str, ' ');
 
-        if (results.size() != (D_+1)){
-            std::cout<<""<<std::endl;
-        }
-
-
-        id = stoi(results[0]);
-
         for (int axis = 0; axis < D_; axis++){
-            pos(id, axis) = stod(results[axis+1]);
+            pos(i, axis) = stod(results[axis]);
         }
     }
 
