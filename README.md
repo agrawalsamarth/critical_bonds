@@ -85,13 +85,15 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
 
 ## MATLAB version<a name="MATLAB">
 
+The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
+
 ## Converters<a name="converters">
 
 ### Convert from LAMMPS data format to cb_input_filename
 
          perl convert-lammps-data-2-cb.pl <lammps-data-filename> [-o <cb_input-filename>]
 
-where outputfile is formatted according to the [above](#input) section so that it can be used directly. Note that LAMMPS dump files cannot be used as they do not contain the bond information. 
+where outputfile is formatted according to the [above](#input) section so that it can be used directly. Note that LAMMPS dump files cannot be used as they do not contain the bond information. If called without argument, this command returns its command syntax. 
 
 ### Convert from mol2 format to cb_input_filename
 
@@ -99,3 +101,4 @@ where outputfile is formatted according to the [above](#input) section so that i
 
          perl convert-critical-bonds-2-data.pl <cb_input-filename> <cb_output-filename> <lammps-data-filename>
 
+If called without argument, this command returns its command syntax. 
