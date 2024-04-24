@@ -1,15 +1,21 @@
 #! /usr/bin/perl
 
+# (c) 18 april 2024 Martin Kroger, ETH Zurich, mk@mat.ethz.ch 
+
 sub USAGE { print<<EOF;
 NAME
        convert-lammps-data-2-cb.pl
 
 SYNOPSIS
-       perl convert-lammps-data-2-cb.pl <lammps.data> [-o <outputfile>]
+       perl convert-lammps-data-2-cb.pl <lammps.data> [-o <cb-output-filename>]
 
 DESCRIPTION
-       This script converts lammps data format to the critical-bonds data format .cb
-       If called without the -o option, the outputfile is <lammps-data-file>.cb
+       This script converts lammps data format to the critical-bonds input format
+       If called without the -o option, the outputfile is <lammps-data-file>.txt
+       Note that produced node IDs start at 0 and have no holes after conversion, as this
+       is required by the critical_bonds input file format. If the critical_bonds 
+       output file is converted back to LAMMPS data format, node IDs start at 1. 
+       All bond tables are adjusted accordingly. 
       
 OPTIONS
       -o <outputfile> 
@@ -30,7 +36,7 @@ foreach $iarg (0 .. $#ARGV)  { $arg=$ARGV[$iarg];
       $dimensions=2; 
    }; 
 }; 
-if (!$outputfile) { $outputfile="$datafile.cb"; }; 
+if (!$outputfile) { $outputfile="$datafile.txt"; }; 
 
 sub strip { chomp $_[0]; $_[0]=~s/^\s+//g; $_[0]=~s/\s+$//; $_[0]=~s/\s+/ /g; $_[0]; };
 
@@ -71,10 +77,9 @@ while (!eof(D)) {
             ($dummy,$type[$id],$x[$id],$y[$id],$z[$id])=split(/ /,$line);
             if (!$noted) { print "assuming lammps Atoms format: id type x y z\n"; $noted=1; };
          } else {
-            print "lammps data-file is corrupt. Edit this script.\n";   
+            print "lammps data-file is corrupt or the atom_style is not recognized here. Modify this script here.\n";   
          }; 
          $ID[$iat]=$id;
-         print "DEBUG ID[$iat] = $id;\n";
          if ($dimensions eq 2) { $z[$id]=""; $zlo=""; $zhi=""; }; 
       }; 
    } elsif  ($line=~/^Bonds/) { $line=<D>;
@@ -96,7 +101,7 @@ print A<<EOF;
 $dimensions
 $xlo $xhi $ylo $yhi $zlo $zhi
 EOF
-print A "$atoms\n"; foreach $iat (1 .. $atoms) { $id=$IDsorted[$iat]; print A "$id $x[$id] $y[$id] $z[$id]\n"; };
-print A "$bonds\n"; foreach $bid (1 .. $bonds) { print A "$id $b1[$bid] $b2[$bid]\n"; };   
+print A "$atoms\n"; foreach $iat (1 .. $atoms) { $id=$IDsorted[$iat]; print A "$x[$id] $y[$id] $z[$id]\n"; };
+print A "$bonds\n"; foreach $bid (1 .. $bonds) { print A "$b1[$bid] $b2[$bid]\n"; };   
 close(A);
 print "created $outputfile\n";
