@@ -91,7 +91,8 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
 This script takes a LAMMPS data file < lammps-data-filename >, runs critical_bonds on it,
 interprets all existing bonds as bond type 1, and saves a new LAMMPS data
 file < cb-lammps-data-filename >, in which critical bonds have bond type 2.
-If called without the -o option, the outputfile is <lammps-data-filename>-cb.data
+If called without the -o option, the outputfile is <lammps-data-filename>-cb.data.
+If called without arguments, this command returns its command syntax. 
 
 OPTIONS
 
@@ -158,8 +159,3 @@ OPTIONS
 ## MATLAB version<a name="MATLAB">
 
 The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
-
-
-
-
-If called without argument, this command returns its command syntax. 
