@@ -20,7 +20,7 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
                   doi = {XX} 
          }
 
-## c++ version<a name="c++"></a>
+## c++ version <a name="c++"></a>
 
 ### Installation 
 
@@ -83,7 +83,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- last critical bond between node b1 and node b2
 
-## critical_bonds for LAMMPS users<a name="LAMMPS"></a>
+## critical_bonds for LAMMPS users <a name="LAMMPS"></a>
 
 LAMMPS users can call critical_bonds from within their LAMMPS script, after saving the configuration via using the LAMMPS shell command. 
 
@@ -113,7 +113,7 @@ OPTIONS
     -v
        creates additional stdout.
 
-## Converters to and from cb-formatted files<a name="converters"></a>
+## Converters to and from cb-formatted files <a name="converters"></a>
 
 ### Convert from LAMMPS data format to cb_input_filename
 
