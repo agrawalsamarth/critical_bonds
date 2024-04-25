@@ -1,0 +1,80 @@
+#! /usr/bin/perl
+
+$critical_bonds = "critical_bonds";
+
+if (-s "$critical_bonds") { } else {
+   print "searching for executable \"critical_bonds\". If this takes long, add the full path to the first line of this script and restart ..\n"; 
+   @L=(`find ../ -name "critical_bonds" -print`); 
+   $critical_bonds = $L[$#L]; chomp $critical_bonds; 
+   if (-s "$critical_bonds") { } else {
+      print "The executable \"critical_bonds\" was not found. Please add the full path to the first line of this script and restart.\n"; exit; 
+   };
+};
+print "using $critical_bonds ..\n";
+
+sub USAGE {  print<<EOF;
+NAME
+       run-critical-bonds
+
+SYNOPSIS
+       perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
+
+DESCRIPTION
+       This script takes a cb-formatted input file <cb-input-filename>, runs critical_bonds on it,
+       and saves the critical bonds in <cb-output-filename>. If the -L option 
+       is given, it creates moreover a LAMMPS data file <lammps-data-filename>, in which non-critical 
+       bonds have bond type 1, and critical bonds have bond type 2.
+
+       If called without the -o option, the outputfile is <cb-input-filename>-cb.txt.
+
+OPTIONS
+    -o <cb-output-filename>
+       writes the ist of critical bonds to the specified file.
+    -L <lammps-data-filename>
+       writes the created LAMMPS data file to the specified file
+    -v
+       creates additional stdout.
+EOF
+exit
+};
+
+if ($#ARGV eq -1) { USAGE; }; 
+$inputfile=$ARGV[0]; if (-s "$inputfile") { } else { print "file $inputfile does not exist!\n"; exit; }; $outputfile="$inputfile-cb.txt"; chomp $outputfile;
+foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg);
+   if ($field eq "-v") { $verbose = "-v"; 
+   } elsif ($arg   eq "-o")    { $outputfile=$ARGV[$iarg+1];
+   } elsif ($field eq "-o")    { $outputfile=$value; 
+   } elsif ($arg   eq "-L")    { $datafile=$ARGV[$iarg+1];
+   } elsif ($field eq "-L")    { $datafile=$value;
+   };
+};
+
+sub PRINT { if ($verbose) { print "[$0] $_[0]\n"; }; };
+
+if (!inputfile) { USAGE; }; 
+
+open(IN,"<$inputfile"); $dimensions=<IN>; close(IN); if ($dimensions eq 2) { $dimensions="-2D"; } else { $dimensions=""; }; 
+
+$percolated = 1; 
+`rm -f .tmp.cb .tmp.data $outputfile`; 
+`cp $inputfile .tmp.txt`; 
+
+while ($percolated) { 
+   PRINT("run $critical_bonds");
+   PRINT(`$critical_bonds .tmp.txt .tmp.cb`); 
+   `cat .tmp.cb >> $outputfile`; 
+   if (-s ".tmp.cb") { } else { $percolated = 0; };
+
+   PRINT("convert critical_bonds result to LAMMPS data file with bond types 1 and 2");
+   PRINT(`perl convert-cb-2-lammps-data.pl $inputfile $outputfile -o .tmp.data $verbose`);
+
+   PRINT("convert LAMMPS data to cb_input_filename using non-critical bonds only");
+   PRINT(`perl convert-lammps-data-2-cb.pl .tmp.data $dimensions -o .tmp.txt -bondtype=1 $verbose`);
+}; 
+
+if ($datafile) { 
+   `mv .tmp.data $datafile`; 
+   print "created $datafile\n";
+};  
+`rm -f .tmp.txt .tmp.cb .tmp.data`; 
+print "created $outputfile\n"; 
