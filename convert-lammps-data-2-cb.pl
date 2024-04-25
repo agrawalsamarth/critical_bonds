@@ -36,7 +36,7 @@ foreach $iarg (0 .. $#ARGV)  { $arg=$ARGV[$iarg];
       $outputfile=$ARGV[$iarg+1]; 
    } elsif ($arg eq "-2D") { 
       $dimensions=2; 
-   } elsif ($arg eq "-verbose") { 
+   } elsif ($arg eq "-v") { 
       $verbose=1; 
    }; 
 }; 
