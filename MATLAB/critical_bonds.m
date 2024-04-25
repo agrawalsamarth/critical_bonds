@@ -90,7 +90,6 @@ if verbose, disp([num2str(toc) ' cpu seconds for critical bonds']); end
 disp([num2str(critical_bonds) ' critical bonds']);
 
 if critical_bonds>0, 
-    outputfile
    cb_bondlist = [critical_b1 critical_b2];
    writematrix(cb_bondlist,outputfile,'delimiter',' ','FileType','text'); 
 end
