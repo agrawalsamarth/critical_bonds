@@ -39,9 +39,9 @@ exit
 };
 
 if ($#ARGV eq -1) { USAGE; }; 
+$lammps_data=$ARGV[0]; if (-s "$lammps_data") { } else { print "file $lammps_data does not exist!\n"; exit; }; $outputfile="$lammps_data-cb.txt";
 foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg);
    if ($field eq "-v") { $verbose = "-v"; 
-   } elsif ($field eq "-data") { $lammps_data=$value; if (-s "$lammps_data") { } else { print "file $lammps_data does not exist!\n"; exit; }; $outputfile="$lammps_data-cb.txt"; 
    } elsif ($field eq "-o")    { $outputfile=$value; 
    } elsif ($arg   eq "-o")    { $outputfile=$ARGV[$iarg+1]; 
    } elsif ($arg   eq "-2D")   { $dimensions="-2D";
