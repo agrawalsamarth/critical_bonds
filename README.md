@@ -57,7 +57,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
 
 #### Example: 
 
-2D Configuration. 5 nodes connected by 7 bonds contained in a periodic box of size [0 1] x [-0.2 1.1]:
+2D Configuration. 5 nodes connected by 6 bonds contained in a periodic box of size [0 1] x [-0.2 1.1]:
 
     2
     0 1 -0.2 1.1
@@ -67,14 +67,13 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     0.4 0.2 
     0.8 0.3
     0.7 0.4
-    7
+    6
     2 3
     0 1
     1 2
     3 1 
     1 4
     4 2
-    3 2
 
 ### Format of the cb_output_filename
 
