@@ -30,7 +30,7 @@ exit
 
 if ($#ARGV eq -1) { USAGE; };
 $datafile=$ARGV[0]; $dimensions=3; 
-if (-s "$datafile") { } else { print "missing file $dtafile\n"; exit; };
+if (-s "$datafile") { } else { print "missing file $datafile\n"; exit; };
 foreach $iarg (0 .. $#ARGV)  { $arg=$ARGV[$iarg]; 
    if ($arg eq "-o") { 
       $outputfile=$ARGV[$iarg+1]; 
