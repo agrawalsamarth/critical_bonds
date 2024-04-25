@@ -156,6 +156,8 @@ OPTIONS
 
 ### Convert from mol2 format to cb_input_filename
 
+To come.
+
 ## MATLAB version<a name="MATLAB">
 
 The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
