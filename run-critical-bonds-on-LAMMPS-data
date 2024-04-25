@@ -1,6 +1,16 @@
 #! /usr/bin/perl
 
-$critical_bonds = "../critical_bonds-main/bin/critical_bonds";
+$critical_bonds = "critical_bonds-main/bin/critical_bonds";
+
+if (-s "$critical_bonds") { } else {
+   print "searching for executable \"critical_bonds\". If this takes long, add its full path to the first line of this script and restart ..\n";
+   @L=(`find ../ -name "critical_bonds" -print`);
+   $critical_bonds = $L[$#L]; chomp $critical_bonds;
+   if (-s "$critical_bonds") { } else {
+      print "The executable \"critical_bonds\" was not found. Please add the full path to the first line of this script and restart.\n"; exit;
+   };
+};
+print "using $critical_bonds ..\n";
 
 sub USAGE {  print<<EOF;
 NAME
@@ -45,7 +55,7 @@ if (!$outputfile) { USAGE; };
 PRINT("convert LAMMPS data to cb_input_filename");
 PRINT(`perl convert-lammps-data-2-cb.pl $lammps_data $dimensions -o .tmp.txt $verbose`); 
 
-PRINT("run critical_bonds");
+PRINT("run critical_bonds. Please stand by ..");
 PRINT(`$critical_bonds .tmp.txt lammps_data-cb.txt`); 
 
 PRINT("convert critical_bonds result to LAMMPS data file with bond types 1 and 2"); 
@@ -58,8 +68,10 @@ PRINT("run critical_bonds on the de-percolated configuration");
 PRINT(`$critical_bonds .tmp1.txt .tmp1-cb.txt`);   
 if (-s ".tmp1-cb.txt") { 
    $nc = `grep -c . .tmp1-cb.txt`+0;
-   print "problem: The configuration with cut critical bonds is still percolated (remaining $nc critical bonds).\n"; 
+   print "Problem: The configuration with cut critical bonds (available in .tmp1.txt) is still percolated (remaining $nc critical bonds).\n";
+   print "The remaining critical bond(s) are:\n"; print `cat .tmp1-cb.txt`;
 } else {
    $nc = `grep -c . lammps_data-cb.txt`+0; 
-   print "The $nc critical bonds are bond types 2 in $outputfile\n";
+   print "The $nc critical bonds are bond types 2 in the generated file: $outputfile\n";
+   `rm -f .tmp1.txt .tmp1-cb.txt`;  
 };
