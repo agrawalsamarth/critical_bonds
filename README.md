@@ -92,13 +92,16 @@ LAMMPS users can call critical_bonds from within their LAMMPS script, after savi
 
 ### Run critical_bonds on a LAMMPS data file<a name="RUN">
 
-         perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> [-o <cb-lammps-data-filename>] [-v]
-
 This script takes a LAMMPS data file *lammps-data-filename*, runs critical_bonds on it,
 interprets all existing bonds as bond type 1, and saves a new LAMMPS data
 file *cb-lammps-data-filename*, in which critical bonds have bond type 2.
 If called without the -o option, the outputfile is *lammps-data-filename*-cb.data.
 If called without arguments, this command returns its command syntax. 
+
+         perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> 
+                  [-o <cb-lammps-data-filename>] 
+                  [-2D]
+                  [-v]
 
 OPTIONS
 
