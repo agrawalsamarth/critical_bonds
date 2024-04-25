@@ -83,19 +83,15 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- last critical bond between node b1 and node b2
 
-## MATLAB version<a name="MATLAB">
-
-The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
-
 ## LAMMPS helper script
 
 ### Run cricital_bonds on a LAMMPS data file
 
          perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> [-o <cb-lammps-data-filename>] [-v]
 
-This script takes a LAMMPS data file <lammps-data-filename>, runs critical_bonds on it,
+This script takes a LAMMPS data file < lammps-data-filename >, runs critical_bonds on it,
 interprets all existing bonds as bond type 1, and saves a new LAMMPS data
-file <cb-lammps-data-filename>, in which critical bonds have bond type 2.
+file < cb-lammps-data-filename >, in which critical bonds have bond type 2.
 If called without the -o option, the outputfile is <lammps-data-filename>-cb.data
 
 OPTIONS
@@ -115,7 +111,7 @@ OPTIONS
          perl convert-lammps-data-2-cb.pl <lammps.data> [-o <cb-output-filename>] [-v] [-bondtype=..]
 
 This script converts lammps data format to the critical-bonds [input format](#input).
-If called without the -o option, the outputfile is <lammps-data-file>.txt
+If called without the -o option, the outputfile is < lammps-data-file >.txt
 Note that produced node IDs start at 0 and have no holes after conversion, as this
 is required by the critical_bonds input file format. If the critical_bonds
 output file is converted back to LAMMPS data format, node IDs start at 1.
@@ -159,6 +155,10 @@ OPTIONS
          creates additional stdout
 
 ### Convert from mol2 format to cb_input_filename
+
+## MATLAB version<a name="MATLAB">
+
+The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
 
 
 
