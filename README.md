@@ -1,6 +1,6 @@
 # Critical bonds for percolated clusters
 
-We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input). The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. For LAMMPS users we provide a [runner script](#RUN) that operates on a single LAMMPS data file and produces a new LAMMPS data file where critical bonds are masked by their own bond type. We offer [converters](#converters) to this input file format from other data formats. Other converters will follow, suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and accepts configurations in arbitrary dimensions. We offer a number of test configurations in the test-configs subdirectory. 
+We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input). The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. For LAMMPS users we provide a [runner script](#RUN) that operates on a single LAMMPS data file and produces a new LAMMPS data file where critical bonds are masked by their own bond type, in addition to a file that lists the critical bonds. The MATLAB version optionally produces graphical output and accepts configurations in arbitrary dimensions. We offer a number of test configurations in the test-configs subdirectory. 
 
 This software is part of the Supplemental Information of the following publication: 
 
@@ -22,7 +22,7 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
 
 ## c++ version<a name="c++">
 
-### Installation
+### Installation 
 
 Clone this Github repository. Then install the code via make
 
@@ -30,13 +30,34 @@ Clone this Github repository. Then install the code via make
          cd critical_bonds; 
          make critical_bonds
 
-Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
+This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. Copy *critical_bonds" to a place where it can be found or where you'll use it. Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
 
           git clone https://gitlab.com/libeigen/eigen.git
 
-### Usage
+### Basic Usage
 
-         ./bin/critical_bonds <cb_input_filename> <cb_output_filename>
+         critical_bonds <cb_input_filename> <cb_output_filename>
+
+This script takes a [cb-formatted](#input) input file *cb-input-filename*, runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. 
+
+### Runner script
+
+This script takes a [cb-formatted](#input) input file *cb-input-filename*, runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. If the -L option is given, it creates moreover a LAMMPS data file *lammps-data-filename*, in which non-critical bonds have bond type 1, and critical bonds have bond type 2. Such file can be visualized using vmd, ovito, and many others. If called without the -o option, the outputfile is *cb-input-filename*-cb.txt.
+
+
+         perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
+
+OPTIONS
+
+    -o <cb-output-filename>
+       writes the ist of critical bonds to the specified file.
+    -L <lammps-data-filename>
+       writes the created LAMMPS data file to the specified file
+    -v
+       creates additional stdout.
+
+
+
 
 ### Format of the cb_input_filename<a name=input>
 
@@ -55,26 +76,6 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- node b1 is bonded to node b2
 
-#### Example: 
-
-2D Configuration. 5 nodes connected by 6 bonds contained in a periodic box of size [0 1] x [-0.2 1.1]:
-
-    2
-    0 1 -0.2 1.1
-    5
-    0.2 0.3  
-    -0.1 0.5 
-    0.4 0.2 
-    0.8 0.3
-    0.7 0.4
-    6
-    2 3
-    0 1
-    1 2
-    3 1 
-    1 4
-    4 2
-
 ### Format of the cb_output_filename
 
     b1 b2                          <- 1st critical bond between node b1 and node b2
@@ -82,16 +83,21 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- last critical bond between node b1 and node b2
 
-## LAMMPS helper script
+## critical_bonds for LAMMPS users
 
-### Run cricital_bonds on a LAMMPS data file<a name="RUN">
+LAMMPS users can call critical_bonds from within their LAMMPS script, after saving the configuration via using the LAMMPS shell command. 
+
+          write_data config.data 
+          shell perl run-critical-bonds-on-LAMMPS-data config.data -o critical-bonds.txt
+
+### Run critical_bonds on a LAMMPS data file<a name="RUN">
 
          perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> [-o <cb-lammps-data-filename>] [-v]
 
-This script takes a LAMMPS data file < lammps-data-filename >, runs critical_bonds on it,
+This script takes a LAMMPS data file *lammps-data-filename*, runs critical_bonds on it,
 interprets all existing bonds as bond type 1, and saves a new LAMMPS data
-file < cb-lammps-data-filename >, in which critical bonds have bond type 2.
-If called without the -o option, the outputfile is <lammps-data-filename>-cb.data.
+file *cb-lammps-data-filename*, in which critical bonds have bond type 2.
+If called without the -o option, the outputfile is *lammps-data-filename*-cb.data.
 If called without arguments, this command returns its command syntax. 
 
 OPTIONS
@@ -104,14 +110,14 @@ OPTIONS
     -v
        creates additional stdout.
 
-## Converters<a name="converters">
+## Converters to and from cb-formatted files<a name="converters">
 
 ### Convert from LAMMPS data format to cb_input_filename
 
          perl convert-lammps-data-2-cb.pl <lammps.data> [-o <cb-output-filename>] [-v] [-bondtype=..]
 
 This script converts lammps data format to the critical-bonds [input format](#input).
-If called without the -o option, the outputfile is < lammps-data-file >.txt
+If called without the -o option, the outputfile is *lammps-data-file*.txt
 Note that produced node IDs start at 0 and have no holes after conversion, as this
 is required by the critical_bonds input file format. If the critical_bonds
 output file is converted back to LAMMPS data format, node IDs start at 1.
@@ -141,7 +147,7 @@ OPTIONS
 
 This script converts a pair of cb-input- and cb-output-files to lammps data format.
 In the lammps data file, non-critical bonds have bond type 1, critical bonds have bond type $cbtype.
-If called without the -o option, the outputfile is <cb-output-filename>.data
+If called without the -o option, the outputfile is *cb-output-filename*.data
 
 OPTIONS
 
@@ -157,27 +163,6 @@ OPTIONS
 ### Convert from mol2 format to cb_input_filename
 
 To come.
-
-## Runner script
-
-         perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
-
-This script takes a cb-formatted input file < cb-input-filename >, runs critical_bonds on it,
-and saves the critical bonds in < cb-output-filename >. If the -L option
-is given, it creates moreover a LAMMPS data file < lammps-data-filename >, in which non-critical
-bonds have bond type 1, and critical bonds have bond type 2.
-
-If called without the -o option, the outputfile is <cb-input-filename>-cb.txt.
-
-OPTIONS
-
-    -o <cb-output-filename>
-       writes the ist of critical bonds to the specified file.
-    -L <lammps-data-filename>
-       writes the created LAMMPS data file to the specified file
-    -v
-       creates additional stdout.
-
 
 ## MATLAB version<a name="MATLAB">
 
