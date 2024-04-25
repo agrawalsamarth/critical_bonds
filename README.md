@@ -1,6 +1,6 @@
 # Critical bonds for percolated clusters
 
-We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input). The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We offer [converters](#converters) to this input file format from other data formats like LAMMPS data files. Other converters will follow. Suggestions for required converters are welcome. The MATLAB version optionally produces graphical output and/or a LAMMPS data file that masks the critical bonds by bond type 2. We offer a number of test configurations in the test-configs subdirectory. 
+We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input). The input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. For LAMMPS users we provide a [runner script](#RUN) that operates on a single LAMMPS data file and produces a new LAMMPS data file where critical bonds are masked by their own bond type. We offer [converters](#converters) to this input file format from other data formats. Other converters will follow, suggestions for required converters are welcome. The MATLAB version optionally produces graphical output. We offer a number of test configurations in the test-configs subdirectory. 
 
 This software is part of the Supplemental Information of the following publication: 
 
@@ -84,7 +84,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
 
 ## LAMMPS helper script
 
-### Run cricital_bonds on a LAMMPS data file
+### Run cricital_bonds on a LAMMPS data file<a name="RUN">
 
          perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> [-o <cb-lammps-data-filename>] [-v]
 
