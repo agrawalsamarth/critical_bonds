@@ -6,7 +6,7 @@ close all
 CITEAS{1} = '____________________________________________________';
 CITEAS{2} = ' ';
 CITEAS{3} = 'This code is part of the Supplementary Material for:';
-CITEAS{4} = 'S. Agrawal, S. Galmarini, M. Kröger';
+CITEAS{4} = 'S. Agrawal, S. Galmarini, M. Krö';
 CITEAS{5} = 'Energy formulation for infinite structures: order parameter for percolation, critical bonds and power-law scaling of contact-based transport';
 CITEAS{6} = 'Phys. Rev. Lett. (2024) in press';
 CITEAS{7} = 'DOI: XX';
@@ -19,6 +19,10 @@ CITEAS{8} = '____________________________________________________';
 vis     = false; 
 
 switch nargin
+    case 1
+        inputfile = string(varargin(1)); inputfile=inputfile{1};
+        outputfile = [inputfile '-cb.txt'];
+        verbose = false;
     case 2
         inputfile = string(varargin(1));
         outputfile = string(varargin(2));
@@ -29,7 +33,7 @@ switch nargin
         verbose = true;
     otherwise
         disp('call critical_bonds with one, two or three arguments:');
-        disp('  critical_bonds(inputfile)                   <- writes critical bonds to result.txt');
+        disp('  critical_bonds(inputfile)                   <- writes critical bonds to inputfile-cb.txt');
         disp('  or'); 
         disp('  critical_bonds(inputfile,outputfile)        <- writes critical bonds to outputfile');
         disp('  or');  
@@ -64,18 +68,18 @@ for cID=1:clusters
             critical_bonds = critical_bonds + 1; 
             myB1 = B1(longestBID);
             myB2 = B2(longestBID);
-            calL(myB1,myB1) = calL(myB1,myB1) - 1; 
-            calL(myB2,myB2) = calL(myB2,myB2) - 1; 
-            calL(myB1,myB2) = calL(myB1,myB2) + 1;
-            calL(myB2,myB1) = calL(myB2,myB1) + 1;
-            if myB1 > NODES, CHANGE_HERE_END, end
-            if myB2 > NODES, CHANGE_HERE_END, end
-            critical_b1(critical_bonds,:) = myB1;
-            critical_b2(critical_bonds,:) = myB2;
+            if ((myB1<NODES)&(myB2<NODES)) 
+                calL(myB1,myB1) = calL(myB1,myB1) - 1; 
+                calL(myB2,myB2) = calL(myB2,myB2) - 1; 
+                calL(myB1,myB2) = calL(myB1,myB2) + 1;
+                calL(myB2,myB1) = calL(myB2,myB1) + 1;
+            end
+            critical_b1(critical_bonds,1) = myB1;
+            critical_b2(critical_bonds,1) = myB2;
             % erase bond, leave X unchanged, adjust B1, B2, bdim and calL
             bentry = L.*round((X(myB2,:)-X(myB1,:))./L);
-            bdim(B1(longestBID),:) = bdim(myB1,:) - bentry; 
-            bdim(B2(longestBID),:) = bdim(myB2,:) + bentry;
+            if B1(longestBID)<NODES, bdim(B1(longestBID),:) = bdim(myB1,:) - bentry; end
+            if B2(longestBID)<NODES, bdim(B2(longestBID),:) = bdim(myB2,:) + bentry; end
             B1(longestBID) = [];
             B2(longestBID) = [];
             BONDS = BONDS-1; 
@@ -85,8 +89,11 @@ end
 if verbose, disp([num2str(toc) ' cpu seconds for critical bonds']); end
 disp([num2str(critical_bonds) ' critical bonds']);
 
-cb_bondlist = [critical_b1 critical_b2]; 
-if critical_b1, writematrix(cb_bondlist,outputfile,'delimiter',' '); end
+if critical_bonds>0, 
+    outputfile
+   cb_bondlist = [critical_b1 critical_b2];
+   writematrix(cb_bondlist,outputfile,'delimiter',' ','FileType','text'); 
+end
 
 for k=1:length(CITEAS); disp(CITEAS{k}); end
 
@@ -193,10 +200,10 @@ function [dim,nodes,bonds,L,ID2origID,x,b1,b2]=read_unsorted_input(inputfile,ver
     hi = LOHI([2 4 6]); 
     L = hi-lo; 
     nodes = A(3,1); A(1:3,:)=[]; 
-    ID2origID = A(1:nodes,1);
+    ID2origID = (0:(nodes-1))';         % hard-coded ID as first column missing in input-file
     origID2ID = nan(max(ID2origID)+1,1);
     origID2ID(ID2origID+1) = (1:nodes);
-    x = A(1:nodes,2:(dim+1));
+    x = A(1:nodes,1:dim);
     for d=1:dim; x(:,d)=x(:,d)-lo(d)-L(d)/2; x(:,d)=x(:,d)-L(d)*round(x(:,d)/L(d)); end
     A(1:nodes,:) = []; 
     bonds = A(1,1); A(1,:)=[]; 
@@ -216,7 +223,7 @@ function [dim,nodes,bonds,L,ID2origID,x,b1,b2]=read_unsorted_input(inputfile,ver
     if verbose, disp([num2str(nodes) ' nodes, ' num2str(bonds) ' unique bonds, ' num2str(dim) '-dimensional periodic system, box sizes ' num2str(L(1:dim)) '.']); end
 
 function [nodes,bonds,x,b1,b2,finalID2ID]=erase_dangling_ends_and_linear_bonds(nodes,bonds,x,b1,b2,verbose)
-    if nodes<500; return; end % keep all bonds for small systems
+    if nodes<20000; finalID2ID=(1:nodes)'; return; end % keep all bonds for small systems
     % keep bonds that connect over the boundary
     conn = cell(nodes,1);
     for bid=1:bonds
@@ -297,3 +304,4 @@ function [nodes,bonds,x,b1,b2,finalID2ID]=erase_dangling_ends_and_linear_bonds(n
     nodes = length(x(:,1));
     bonds = length(b1); 
     if verbose, disp([num2str(nodes) ' nodes and ' num2str(bonds) ' bonds considered in the analysis.']); end
+
