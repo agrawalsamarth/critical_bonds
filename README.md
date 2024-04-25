@@ -158,6 +158,27 @@ OPTIONS
 
 To come.
 
+## Runner script
+
+         perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
+
+This script takes a cb-formatted input file < cb-input-filename >, runs critical_bonds on it,
+and saves the critical bonds in < cb-output-filename >. If the -L option
+is given, it creates moreover a LAMMPS data file < lammps-data-filename >, in which non-critical
+bonds have bond type 1, and critical bonds have bond type 2.
+
+If called without the -o option, the outputfile is <cb-input-filename>-cb.txt.
+
+OPTIONS
+
+    -o <cb-output-filename>
+       writes the ist of critical bonds to the specified file.
+    -L <lammps-data-filename>
+       writes the created LAMMPS data file to the specified file
+    -v
+       creates additional stdout.
+
+
 ## MATLAB version<a name="MATLAB">
 
 The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
