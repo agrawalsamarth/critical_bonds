@@ -29,6 +29,7 @@ Clone this Github repository. Then install the code via make
          git clone https://github.com/agrawalsamarth/critical_bonds;
          cd critical_bonds; 
          make critical_bonds
+         make scripts
 
 This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. Copy *critical_bonds" to a place where it can be found or where you'll use it. Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
 
@@ -42,10 +43,14 @@ This script takes a [cb-formatted](#input) input file *cb-input-filename*, runs 
 
 ### Runner script<a name="RUN"></a>
 
-This script takes a [cb-formatted](#input) input file *cb-input-filename*, runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. If the -L option is given, it creates moreover a LAMMPS data file *lammps-data-filename*, in which non-critical bonds have bond type 1, and critical bonds have bond type 2. Such file can be visualized using vmd, ovito, and many others. If called without the -o option, the outputfile is *cb-input-filename*-cb.txt.
+This script takes an input file *input-filename* (allowed formats listed below), runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. If the -L option is given, it creates moreover a LAMMPS data file *lammps-data-filename*, in which non-critical bonds have bond type 1, and critical bonds have bond type 2. Such file can be visualized using vmd, ovito, and many others. If called without the -o option, the outputfile is *input-filename*-cb.txt.
 
+         perl run-critical-bonds <input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
 
-         perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
+ALLOWED INPUT FILE FORMATS 
+
+1) [cb-formatted](#input) 
+2) LAMMPS data file
 
 OPTIONS
 
@@ -56,10 +61,7 @@ OPTIONS
     -v
        creates additional stdout.
 
-
-
-
-### Format of the cb_input_filename<a name=input></a>
+### cb-formatted input file<a name=input></a>
 
 For 2D configurations the entries in brackets are absent. The coordinates of the nodes should be between the specified box sizes (xlo, xhi) etc. Node IDs start at 0 and end at number of nodes-1, ie, the first row of the coordinates table corresponds to the node with id 0, and the last row of this table has id number of nodes - 1. These id values are then used to build the corresponding bond table.
 
@@ -88,30 +90,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
 LAMMPS users can call critical_bonds from within their LAMMPS script, after saving the configuration via using the LAMMPS shell command. 
 
           write_data config.data 
-          shell perl run-critical-bonds-on-LAMMPS-data config.data -o critical-bonds.txt
-
-### Run critical_bonds on a LAMMPS data file
-
-This script takes a LAMMPS data file *lammps-data-filename*, runs critical_bonds on it,
-interprets all existing bonds as bond type 1, and saves a new LAMMPS data
-file *cb-lammps-data-filename*, in which critical bonds have bond type 2.
-If called without the -o option, the outputfile is *lammps-data-filename*-cb.data.
-If called without arguments, this command returns its command syntax. 
-
-         perl run-critical-bonds-on-LAMMPS-data <lammps-data-filename> 
-                  [-o <cb-lammps-data-filename>] 
-                  [-2D]
-                  [-v]
-
-OPTIONS
-
-    -o <outputfile>
-       writes the created LAMMPS data file to the specified outputfile
-    -2D
-       assumes two-dimensionsal data, i.e., ignores the z-coordinate.
-       By default, a 3D configuration is assumed.
-    -v
-       creates additional stdout.
+          shell perl run-critical-bonds config.data -o critical-bonds.txt
 
 ## Converters to and from cb-formatted files <a name="converters"></a>
 
