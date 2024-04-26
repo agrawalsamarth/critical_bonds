@@ -2,6 +2,8 @@
 
 # (c) 18 april 2024 Martin Kroger, ETH Zurich, mk@mat.ethz.ch 
 
+no warnings 'experimental::smartmatch';
+
 sub USAGE { print<<EOF;
 NAME
        convert-lammps-data-2-cb.pl
