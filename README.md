@@ -50,7 +50,7 @@ This script takes an input file *input-filename* (allowed formats listed below),
 ALLOWED INPUT FILE FORMATS 
 
 1) [cb-formatted](#input) configuration file
-2) [LAMMPS data](#LAMMPSDATA) configuration file
+2) [LAMMPS data](#lammpsdata) configuration file
 
 OPTIONS
 
@@ -78,7 +78,7 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     ...
     b1 b2                          <- node b1 is bonded to node b2
 
-### LAMMPS data-formatted input file format<a name="LAMMPSDATA">
+### LAMMPS data-formatted input file format<a name="lammpsdata">
 
     .. atoms
     .. bonds
