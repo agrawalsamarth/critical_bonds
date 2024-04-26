@@ -85,6 +85,8 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     .. atom types
     .. bond types
 
+    .. .. xlo xhi
+
     Atoms 
 
     id mol type q x y z   OR 
