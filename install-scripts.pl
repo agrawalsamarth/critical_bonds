@@ -14,6 +14,17 @@ foreach $script (`ls -1 *.pl run*`) { chomp $script;
 };
 
 # test benchmark configuration
-# $test_lammps_configuration = "test_configs/config-all-bonds-1.data";
-# `perl run-critical-bonds-on-LAMMPS-data $test_lammps_configuration -o test-1.txt`;
-# `bin/critical_bonds $test_configuration test-result.txt`;
+$test_lammps_configuration = "test_configs/config-all-bonds-1.data";
+`perl run-critical-bonds $test_lammps_configuration -o .tmp-test.txt`;
+$nc = `grep -c . .tmp-test.txt`+0;
+if ($nc eq 129) {
+   print "successfully tested run-critical-bonds on a test configuration. You are ready to go.\n";
+   `rm -f .tmp-test.txt`;
+} else {
+   print<<EOF;
+PROBLEM: The installation was apparently not successful.
+perl run-critical-bonds $test_lammps_configuration -o test-1.txt
+should return a file test-1.txt with 129 critical bonds.
+Please contact us.
+EOF
+};
