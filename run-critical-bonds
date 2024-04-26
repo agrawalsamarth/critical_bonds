@@ -51,8 +51,6 @@ foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg)
 
 sub PRINT { if ($verbose) { print "[$0] $_[0]\n"; }; };
 
-if (!inputfile) { USAGE; }; 
-
 open(IN,"<$inputfile"); $dimensions=<IN>; close(IN); if ($dimensions eq 2) { $dimensions="-2D"; } else { $dimensions=""; }; 
 
 $percolated = 1; 
