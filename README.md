@@ -1,6 +1,6 @@
 # Critical bonds for percolated clusters
 
-We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input) or alternatively, a LAMMPS data file. In each case the input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We provide a [runner script](#RUN) that operates on a single input file, produces a list of critical bonds and optionally a new LAMMPS data file where critical bonds are masked by their own bond type. The MATLAB version optionally produces graphical output and accepts cb-formatted configurations in arbitrary dimensions. We offer a number of test configurations in the test-configs subdirectory, and converters to switch between file formats, if necessary.  
+We here offer two versions of the critical_bonds software that return the critical bonds for a 2D or 3D undirected bond-connected network of nodes in the presence of periodic boundary conditions: [c++](#c++) and [MATLAB](#MATLAB) versions. Both versions operate on a standardized input file format "cb-input-filename" described [below](#input) or alternatively, a LAMMPS data file. In each case the input file carries information about the box size, coordinates of nodes, and bonded pairs of nodes. We provide a [runner script](#runscript) that operates on a single input file, produces a list of critical bonds and optionally a new LAMMPS data file where critical bonds are masked by their own bond type. The MATLAB version optionally produces graphical output and accepts cb-formatted configurations in arbitrary dimensions. We offer a number of test configurations in the test-configs subdirectory, and converters to switch between file formats, if necessary.  
 
 This software is part of the Supplemental Information of the following publication: 
 
@@ -41,7 +41,7 @@ This will create the executable *critical_bonds" in the critical_bonds-main/bin 
 
 This script takes a [cb-formatted](#input) input file *cb-input-filename*, runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. 
 
-### Runner script<a name="RUN"></a>
+### Runner script<a name="runscript"></a>
 
 This script takes an input file *input-filename* (allowed formats listed below), runs critical_bonds on it, and saves the critical bonds in *cb-output-filename*. If the -L option is given, it creates moreover a LAMMPS data file *lammps-data-filename*, in which non-critical bonds have bond type 1, and critical bonds have bond type 2. Such file can be visualized using vmd, ovito, and many others. If called without the -o option, the outputfile is *input-filename*-cb.txt.
 
