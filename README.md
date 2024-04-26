@@ -24,16 +24,16 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
 
 ### Installation 
 
-Clone this Github repository. Then install the code via make
+Clone this Github repository. Then switch to the new *critical_bonds-main* directory, and download the Eigen library. Finally, compile the code via make
 
          git clone https://github.com/agrawalsamarth/critical_bonds;
-         cd critical_bonds; 
-         make critical_bonds
-         make scripts
+         cd critical_bonds-main; 
+         
+         git clone https://gitlab.com/libeigen/eigen.git;
+      
+         make all
 
-This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. The *make scripts* command adds absolute paths to all scripts and tests the installation by applying critical_bonds to a test configuration. Copy *critical_bonds" or alternatively the "run-critical-bonds" script to a place where it can be found or where you'll use it. Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
-
-          git clone https://gitlab.com/libeigen/eigen.git
+This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. The *make scripts* command adds absolute paths to all scripts and tests the installation by applying critical_bonds to a test configuration. Copy *critical_bonds" or alternatively the "run-critical-bonds" script to a place where it can be found or where you'll use it.
 
 ### Basic Usage
 
