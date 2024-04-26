@@ -10,12 +10,12 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 BIN_SRC_DIR = ./bin_src
 BIN_DIR = ./bin
 
-all: critical_bonds
-#all: psd_test
+all: eigen critical_bonds verify
 	
 critical_bonds: $(OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(CPPFLAGS) -c -o critical_bonds.o critical_bonds.cpp
 	$(CXX) $(LDFLAGS) -o $(BIN_DIR)/$@ $^ critical_bonds.o
+	perl ./install-scripts.pl scripts
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) -c -o $@ $<
@@ -26,8 +26,11 @@ $(BIN_DIR):
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
-scripts:
-	perl ./install-scripts.pl
+eigen:
+	perl ./install-scripts.pl eigen
+
+verify:
+	perl ./install-scripts.pl benchmark
 
 clean:
 	rm *.o
