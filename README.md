@@ -31,7 +31,7 @@ Clone this Github repository. Then install the code via make
          make critical_bonds
          make scripts
 
-This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. Copy *critical_bonds" to a place where it can be found or where you'll use it. Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
+This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. Copy *critical_bonds" or alternatively the "run-critical-bonds" script to a place where it can be found or where you'll use it. Note that Eigen library is required. It comes with this repository. If necessary, it can be installed separately via 
 
           git clone https://gitlab.com/libeigen/eigen.git
 
