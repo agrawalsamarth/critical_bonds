@@ -1,29 +1,30 @@
 #! /usr/bin/perl
 
-$critical_bonds = "critical_bonds";
+# This is software obtained from:
+# https://github.com/agrawalsamarth/critical_bonds
 
-if (-s "$critical_bonds") { } else {
-   print "searching for executable \"critical_bonds\". If this takes long, add the full path to the first line of this script and restart ..\n"; 
-   @L=(`find ../ -name "critical_bonds" -print`); 
-   $critical_bonds = $L[$#L]; chomp $critical_bonds; 
-   if (-s "$critical_bonds") { } else {
-      print "The executable \"critical_bonds\" was not found. Please add the full path to the first line of this script and restart.\n"; exit; 
-   };
-};
-print "using $critical_bonds ..\n";
+# critical_bonds installation directory
+$INSTALLDIR="./";
+
+no warnings 'experimental::smartmatch';
 
 sub USAGE {  print<<EOF;
 NAME
        run-critical-bonds
 
 SYNOPSIS
-       perl run-critical-bonds <cb-input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
+       perl run-critical-bonds <input-filename> [-o <cb-output-filename>] [-L <lammps-data-filename>] [-v]
 
 DESCRIPTION
-       This script takes a cb-formatted input file <cb-input-filename>, runs critical_bonds on it,
-       and saves the critical bonds in <cb-output-filename>. If the -L option 
-       is given, it creates moreover a LAMMPS data file <lammps-data-filename>, in which non-critical 
-       bonds have bond type 1, and critical bonds have bond type 2.
+       This script takes the input file <cb-input-filename>, 
+       runs critical_bonds on it, and saves the critical bonds in <cb-output-filename>. 
+
+       Allowed input file formats are: 
+       (i)  cb-formatted
+       (ii) LAMMPS data file
+
+       If the -L option is given, a LAMMPS data file <lammps-data-filename> is generated, 
+       in which non-critical bonds have bond type 1, and critical bonds have bond type 2.
 
        If called without the -o option, the outputfile is <cb-input-filename>-cb.txt.
 
@@ -38,6 +39,8 @@ EOF
 exit
 };
 
+$critical_bonds = "$INSTALLDIR/bin/critical_bonds";
+
 if ($#ARGV eq -1) { USAGE; }; 
 $inputfile=$ARGV[0]; if (-s "$inputfile") { } else { print "file $inputfile does not exist!\n"; exit; }; $outputfile="$inputfile-cb.txt"; chomp $outputfile;
 foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg);
@@ -49,30 +52,48 @@ foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg)
    };
 };
 
-sub PRINT { if ($verbose) { print "[$0] $_[0]\n"; }; };
+sub PRINT { if ($verbose) { print "[$0] @_\n"; }; };
 
-open(IN,"<$inputfile"); $dimensions=<IN>; close(IN); if ($dimensions eq 2) { $dimensions="-2D"; } else { $dimensions=""; }; 
+# clean 
+`rm -f .tmp$$.cb .tmp$$.data $outputfile`;
+
+# recognize input file type
+$LAMMPS = `head -20 $inputfile | grep -c "atom types"`+0; 
+
+if ($LAMMPS) { 
+   PRINT("recognized input file type: LAMMPS data");
+   $LAMMPS_z = `head -20 $inputfile | grep -c "zhi"`+0;
+   if ($LAMMPS_z) { $dimensions=""; } else { $dimensions="-2D"; }; 
+   PRINT("convert LAMMPS data to cb_input_filename using all bonds");
+   PRINT(`perl convert-lammps-data-2-cb.pl $inputfile $dimensions -o .tmp$$-input.txt $verbose`);
+   $inputfile = ".tmp$$-input.txt"; 
+} else { 
+   PRINT("recognized input file type: cb-formatted");
+}; 
+
+# obtain dimensions from cb-formatted file 
+`cp $inputfile .tmp$$.txt`;
+open(IN,"<$inputfile"); $dimensions=<IN>; close(IN); if ($dimensions eq 2) { $dimensions="-2D"; } else { $dimensions=""; };
 
 $percolated = 1; 
-`rm -f .tmp.cb .tmp.data $outputfile`; 
-`cp $inputfile .tmp.txt`; 
 
 while ($percolated) { 
-   PRINT("run $critical_bonds");
-   PRINT(`$critical_bonds .tmp.txt .tmp.cb`); 
-   `cat .tmp.cb >> $outputfile`; 
-   if (-s ".tmp.cb") { } else { $percolated = 0; };
+   PRINT("running critical_bonds ..",`$critical_bonds .tmp$$.txt .tmp$$.cb`); 
+   `cat .tmp$$.cb >> $outputfile`; 
+   if (-s ".tmp$$.cb") { } else { $percolated = 0; };
 
-   PRINT("convert critical_bonds result to LAMMPS data file with bond types 1 and 2");
-   PRINT(`perl convert-cb-2-lammps-data.pl $inputfile $outputfile -o .tmp.data $verbose`);
+   PRINT("converting critical_bonds result to LAMMPS data file with bond types 1 and 2");
+   PRINT(`perl convert-cb-2-lammps-data.pl $inputfile $outputfile -o .tmp$$.data $verbose`);
 
-   PRINT("convert LAMMPS data to cb_input_filename using non-critical bonds only");
-   PRINT(`perl convert-lammps-data-2-cb.pl .tmp.data $dimensions -o .tmp.txt -bondtype=1 $verbose`);
+   PRINT("converting LAMMPS data to cb_input_filename using non-critical bonds only");
+   PRINT(`perl convert-lammps-data-2-cb.pl .tmp$$.data $dimensions -o .tmp$$.txt -bondtype=1 $verbose`);
 }; 
 
 if ($datafile) { 
-   `mv .tmp.data $datafile`; 
-   print "created $datafile\n";
+   `mv .tmp$$.data $datafile`; 
+   print "created $datafile # a LAMMPS data file with two bond types. Critical bonds have bond type 2.\n";
 };  
-`rm -f .tmp.txt .tmp.cb .tmp.data`; 
-print "created $outputfile\n"; 
+
+$critical_bonds = `grep -c . $outputfile`+0; 
+PRINT("deleting .tmp$$-files",`rm -f .tmp$$.txt .tmp$$.cb .tmp$$.data .tmp$$-input.txt`); 
+print "created $outputfile carrying $critical_bonds critical bonds\n"; 
