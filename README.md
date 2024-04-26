@@ -61,7 +61,7 @@ OPTIONS
     -v
        creates additional stdout.
 
-### cb-formatted input file<a name=input></a>
+### cb-formatted input file format<a name=input></a>
 
 For 2D configurations the entries in brackets are absent. The coordinates of the nodes should be between the specified box sizes (xlo, xhi) etc. Node IDs start at 0 and end at number of nodes-1, ie, the first row of the coordinates table corresponds to the node with id 0, and the last row of this table has id number of nodes - 1. These id values are then used to build the corresponding bond table.
 
@@ -77,6 +77,22 @@ For 2D configurations the entries in brackets are absent. The coordinates of the
     b1 b2                          
     ...
     b1 b2                          <- node b1 is bonded to node b2
+
+### LAMMPS data-formatted input file format
+
+    .. atoms
+    .. bonds
+    .. atom types
+    .. bond types
+
+    Atoms 
+
+    id mol type q x y z   OR 
+    id type x y z   etc. 
+
+    Bonds 
+
+    bid btype b1 b2 
 
 ### Format of the cb_output_filename
 
