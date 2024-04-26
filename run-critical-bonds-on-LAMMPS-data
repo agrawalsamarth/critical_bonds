@@ -50,8 +50,6 @@ foreach $iarg (0 .. $#ARGV) { $arg=$ARGV[$iarg]; ($field,$value)=split(/=/,$arg)
 
 sub PRINT { if ($verbose) { print "[$0] $_[0]\n"; }; };
 
-if (!$outputfile) { USAGE; }; 
-
 PRINT("convert LAMMPS data to cb_input_filename");
 PRINT(`perl convert-lammps-data-2-cb.pl $input_lammps_data $dimensions -o .tmp-input.txt $verbose`); 
 
