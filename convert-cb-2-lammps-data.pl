@@ -2,6 +2,8 @@
 
 # (c) 18 april 2024 Martin Kroger, ETH Zurich, mk@mat.ethz.ch
 
+no warnings 'experimental::smartmatch';
+
 $mol  = 1;     
 $type = 1;
 $q    = "0.0";
