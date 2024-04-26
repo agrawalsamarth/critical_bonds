@@ -26,6 +26,9 @@ $(BIN_DIR):
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
+scripts:
+	perl ./install-scripts.pl
+
 clean:
 	rm *.o
 	rm -rf $(BIN_DIR)
