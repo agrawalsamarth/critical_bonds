@@ -27,7 +27,7 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
 Clone this Github repository. Then switch to the new *critical_bonds-main* directory, and download the Eigen library. Finally, compile the code via make
 
          git clone https://github.com/agrawalsamarth/critical_bonds;
-         cd critical_bonds-main; 
+         cd critical_bonds; 
          
          git clone https://gitlab.com/libeigen/eigen.git;
       
