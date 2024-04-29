@@ -10,7 +10,7 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 BIN_SRC_DIR = ./bin_src
 BIN_DIR = ./bin
 
-all: Eigen critical_bonds verify
+all: adjustpath critical_bonds verify
 	
 critical_bonds: $(OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(CPPFLAGS) -c -o critical_bonds.o critical_bonds.cpp
@@ -26,7 +26,7 @@ $(BIN_DIR):
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
-Eigen:
+adjustpath:
 	perl ./install-scripts.pl eigen
 
 verify:
