@@ -29,9 +29,7 @@ Clone this Github repository. Then switch to the new *critical_bonds-main* direc
          git clone https://github.com/agrawalsamarth/critical_bonds;
          cd critical_bonds; 
          
-         git clone https://gitlab.com/libeigen/eigen.git;
-      
-         make all
+         perl ./install.pl
 
 This will create the executable *critical_bonds" in the critical_bonds-main/bin subdirectory. The *make scripts* command adds absolute paths to all scripts and tests the installation by applying critical_bonds to a test configuration. Copy *critical_bonds" or alternatively the "run-critical-bonds" script to a place where it can be found or where you'll use it.
 
