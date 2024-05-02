@@ -31,7 +31,7 @@ Clone this Github repository. Then switch to the new *critical_bonds-main* direc
          
          perl ./install.pl
 
-This will create the executable *critical_bonds" in the bin subdirectory. The *install.pl* command install the eigen library and adds absolute paths to all scripts and tests the installation by applying critical_bonds to a test configuration. 
+This will create the executable *critical_bonds" in the bin subdirectory. The *install.pl* command installs the eigen library and adds absolute paths to all scripts and tests the installation by applying critical_bonds to a test configuration. 
 
 Copy *critical_bonds" or alternatively the "run-critical-bonds" script to a place where it can be found or where you'll use it.
 
