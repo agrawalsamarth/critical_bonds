@@ -6,7 +6,7 @@ This software is part of the Supplemental Information of the following publicati
 
 S. Agrawal, S. Galmarini, M. Kröger, 
 Energy formulation for infinite structures: order parameter for percolation, critical bonds and power-law scaling of contact-based transport,
-Phys. Rev. Lett. (2024) in press since 12 Apr 2024
+Phys. Rev. Lett. 132 (2024) 196101
 
          @article{critical-bonds,
                   author = {S. Agrawal and S. Galmarini and M. Kr\"oger}, 
@@ -14,10 +14,10 @@ Phys. Rev. Lett. (2024) in press since 12 Apr 2024
                   critical bonds and power-law scaling of contact-based transport},
                   journal = {Phys. Rev. Lett.},
                   year = {2024},
-                  volume = {XX},
-                  pages = {XX},
+                  volume = {132},
+                  pages = {196101},
                   note = {Code available at https://github.com/agrawalsamarth/critical_bonds}
-                  doi = {XX} 
+                  doi = {10.1103/PhysRevLett.132.196101} 
          }
 
 ## c++ version <a name="c++"></a>
