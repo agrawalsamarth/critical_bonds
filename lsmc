@@ -71,6 +71,15 @@ def laguerre_features(p, R, degree=3, cross=True):
     Φ = np.hstack([Lp, LR, cross_terms])
     return Φ
 
+# R_current grid value repeated across all scenarios
+R_vec = np.full_like(P_t, self.R_grid[k])
+X = laguerre_features(P_t, R_vec, degree=self.degree, cross=True)
+model.fit(X, Y)
+
+phi = laguerre_features([p], [R], degree=self.degree, cross=True).ravel()
+cont = float(self.betas[t][k] @ phi)
+
+
 
     # ---- Training (backward induction with regression) ----
     def fit(self, prices):
