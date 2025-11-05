@@ -38,48 +38,30 @@ class LSMC_Battery:
         # total energy you may purchase in a day (grid energy) per your spec
         return self.cycles * self.R_max / self.eta_c
 
-    import numpy as np
+import numpy as np
 from numpy.polynomial.laguerre import lagval
 
-def laguerre_features(p, R=None, degree=3, cross=True):
+def laguerre_features(p, R, degree=3, cross=True):
     """
-    Generate Laguerre polynomial features for LSMC basis expansion.
-    Optionally includes cross terms with state variable R.
-
-    Parameters
-    ----------
-    p : array-like, shape (n,)
-        Price variable.
-    R : array-like, shape (n,), optional
-        State variable (e.g. storage level).
-    degree : int
-        Maximum Laguerre polynomial degree.
-    cross : bool
-        Whether to include p–R interaction terms.
-
-    Returns
-    -------
-    Φ : ndarray, shape (n, n_features)
-        Feature matrix including Laguerre basis and cross terms.
+    Laguerre polynomial basis with cross terms between price (p) and storage (R).
+    Returns an (n, n_features) array.
     """
     p = np.asarray(p).reshape(-1)
-    n = len(p)
-    # Normalize prices to roughly [0, 1] for numerical stability
-    p_scaled = p / (np.max(p) + 1e-9)
-    coeffs = np.eye(degree + 1)
-    Lp = np.column_stack([lagval(p_scaled, coeffs[d]) for d in range(degree + 1)])
-
-    if R is None:
-        return Lp
-
     R = np.asarray(R).reshape(-1)
+    n = len(p)
+
+    # Normalize roughly to [0, 1] for stability
+    p_scaled = p / (np.max(p) + 1e-9)
     R_scaled = R / (np.max(R) + 1e-9)
+    coeffs = np.eye(degree + 1)
+
+    Lp = np.column_stack([lagval(p_scaled, coeffs[d]) for d in range(degree + 1)])
     LR = np.column_stack([lagval(R_scaled, coeffs[d]) for d in range(degree + 1)])
 
     if not cross:
         return np.hstack([Lp, LR])
 
-    # Cross terms: pairwise products Lp_i * LR_j
+    # Cross terms (exclude constant term)
     cross_terms = np.column_stack([
         Lp[:, i] * LR[:, j]
         for i in range(1, degree + 1)
