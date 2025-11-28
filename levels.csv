@@ -32,3 +32,23 @@
 200
 214
 228
+
+
+m1 = fT + (lamY*muY/betaY)*(1 - math.exp(-betaY*T)) \
+          - (lamZ*muZ/betaZ)*(1 - math.exp(-betaZ*T))
+
+# --- Variance ---
+m2 = (sigma**2)/(2*alpha)*(1 - math.exp(-2*alpha*T)) \
+   + (lamY*muY**2/betaY)*(1 - math.exp(-2*betaY*T)) \
+   + (lamZ*muZ**2/betaZ)*(1 - math.exp(-2*betaZ*T))
+
+# --- Lognormal matching ---
+s2 = math.log(1 + m2/m1**2)
+s = math.sqrt(s2)
+mu = math.log(m1) - 0.5*s2
+
+# --- Option price ---
+d1 = (math.log(m1/K) + 0.5*s2)/s
+d2 = d1 - s
+Phi = lambda x: 0.5*(1 + math.erf(x/math.sqrt(2)))
+C0 = math.exp(-r*T)*(m1*Phi(d1) - K*Phi(d2))
