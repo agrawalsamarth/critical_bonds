@@ -52,3 +52,47 @@ d1 = (math.log(m1/K) + 0.5*s2)/s
 d2 = d1 - s
 Phi = lambda x: 0.5*(1 + math.erf(x/math.sqrt(2)))
 C0 = math.exp(-r*T)*(m1*Phi(d1) - K*Phi(d2))
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+import numpy as np
+
+# --- Given inputs ---
+# Example placeholders (replace these with your actual data)
+ft_vals = np.linspace(82, 84, 8000)     # f(t) values between T1 and T2
+alpha = 0.053                           # OU mean reversion
+sigma = 0.37                            # level diffusion (effective sigma)
+lambdaY, muY = 0.5, 4.0                 # upward jumps
+lambdaZ, muZ = 0.4, 3.0                 # downward jumps
+T1, T2 = 0.0, 8000.0                    # time window (in minutes)
+
+# --- Basic setup ---
+times = np.linspace(T1, T2, len(ft_vals))
+dt = times[1] - times[0]
+Delta = T2 - T1
+
+# --- 1. Mean of A ---
+integral_f = np.trapz(ft_vals, times)  # numerical integration of f(t)
+term_jumps = (lambdaY * muY - lambdaZ * muZ) * 0.5 * (T2**2 - T1**2)
+mean_A = (integral_f + term_jumps) / Delta
+
+# --- 2. Variance of A ---
+# (a) OU contribution
+var_X = (sigma**2 / (alpha**3 * Delta**2)) * (alpha * Delta - (1 - np.exp(-alpha * Delta)))
+
+# (b) Jump contribution
+var_jumps = 2.0 * (lambdaY * muY**2 + lambdaZ * muZ**2) * (T1 + Delta / 3.0)
+
+# Total variance
+var_A = var_X + var_jumps
+
+# --- Print results ---
+print(f"Mean of delivery average A: {mean_A:.6f}")
+print(f"Variance of delivery average A: {var_A:.6f}")
+print(f"Standard deviation of A: {np.sqrt(var_A):.6f}")
+
+
+
+
+
