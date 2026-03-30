@@ -164,6 +164,6 @@ OPTIONS
 
 To come.
 
-## MATLAB version<a name="MATLAB">
+## MATLAB version<a name="MATLAB"></a>
 
 The MATLAB version is contained in the MATLAB subdirectory. For its description see [here](MATLAB).
