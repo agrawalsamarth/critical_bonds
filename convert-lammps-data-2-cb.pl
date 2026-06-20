@@ -129,7 +129,7 @@ while (!eof(D)) {
 close(D);
 if ($verbose) { print "$ignored_bonds bonds have been ignored due to their type.\n"; }; 
 
-if ($#b1 eq $bonds) { } else { print "data format error in bonds section\n"; }; 
+if (($#b1 eq $bonds)&($bonds>0)) { } else { print "data format error in bonds section [$#b1 versus $bonds]\n"; };
 
 if ($verbose) { print "\n"; foreach $j (0 .. 10) { print "data line $j carries original ID $ID[$j]\n"; }; print "\n"; };
 
