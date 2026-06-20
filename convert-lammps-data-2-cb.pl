@@ -93,6 +93,10 @@ while (!eof(D)) {
             if (!$noted) { print "assuming lammps Atoms format: id type x y z ix iy iz\n"; $noted=1; };
          } elsif ($#vals eq 5) {
             $id=$vals[0];
+            ($dummy,$mol[$id],$type[$id],$x[$id],$y[$id],$z[$id])=split(/ /,$line);
+            if (!$noted) { print "assuming lammps Atoms format: id mol type x y z\n"; $noted=1; };
+         } elsif ($#vals eq 4) {
+            $id=$vals[0];
             ($dummy,$type[$id],$x[$id],$y[$id],$z[$id])=split(/ /,$line);
             if (!$noted) { print "assuming lammps Atoms format: id type x y z\n"; $noted=1; };
          } else {
