@@ -6,7 +6,7 @@ close all
 CITEAS{1} = '____________________________________________________';
 CITEAS{2} = ' ';
 CITEAS{3} = 'This code is part of the Supplementary Material for:';
-CITEAS{4} = 'S. Agrawal, S. Galmarini, M. Krö';
+CITEAS{4} = 'S. Agrawal, S. Galmarini, M. Kröger';
 CITEAS{5} = 'Energy formulation for infinite structures: order parameter for percolation, critical bonds and power-law scaling of contact-based transport';
 CITEAS{6} = 'Phys. Rev. Lett. 132 (2024) 196101';
 CITEAS{7} = 'DOI: 10.1103/PhysRevLett.132.196101';
